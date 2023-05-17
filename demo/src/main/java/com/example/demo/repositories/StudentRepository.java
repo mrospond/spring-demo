@@ -26,7 +26,11 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
 //    select * from student where first_name like 'John%'
     List<Student> findByFirstNameStartsWith(String firstName);
 
-/* ------------------------ JPQL ------------------------ */
+//    select * from student s inner join address a on s.address_id = a.id where a.city = 'Radom'
+    List<Student> findByAddressCity(String city);
+
+    @Query("from Student where address.city = :city")
+    List<Student> getByAddressCity(String city);
 
 //    @Query("From Student where firstName = :first_n and lastName = :lastName")
 //    Student myGetByFirstNameAndLastName(@Param("first_n") String firstName, String lastName);
@@ -43,5 +47,6 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
     @Transactional
     @Query("delete from Student where firstName = :firstName")
     Integer deleteByFirstName(String firstName);
+
 
 }

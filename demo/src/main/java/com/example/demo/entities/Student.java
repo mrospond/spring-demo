@@ -4,14 +4,21 @@ package com.example.demo.entities;
 import com.example.demo.request.CreateStudentRequest;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.PrimaryKeyJoinColumn;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Data
 @Entity
@@ -37,6 +44,14 @@ public class Student {
     // not representing any column in the student table
     @Transient
     private String fullName;
+
+    @OneToOne(fetch = FetchType.LAZY) //default: EAGER
+    @JoinColumn(name = "address_id")
+//    @PrimaryKeyJoinColumn
+    private Address address;
+
+    @OneToMany(mappedBy = "student") // non owning side of the relationship
+    private List<Subject> learningSubjects;
 
     public Student(CreateStudentRequest createStudentRequest) {
         this.firstName = createStudentRequest.getFirstName();
