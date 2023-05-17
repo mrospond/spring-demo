@@ -7,6 +7,8 @@ import com.example.demo.request.InQueryRequest;
 import com.example.demo.request.UpdateStudentRequest;
 import com.example.demo.services.StudentService;
 import jakarta.validation.Valid;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,11 +28,15 @@ import java.util.List;
 public class StudentController {
 
     // TODO: 17-May-23: MapStruct, exception handling, DAO?
+
+    Logger logger = LoggerFactory.getLogger(StudentController.class);
+
     @Autowired
     StudentService studentService;
 
     @GetMapping("getAll")
     public List<StudentResponse> getAllStudents() {
+
         List<Student> studentList = studentService.getAllStudents();
         List<StudentResponse> studentResponseList = new ArrayList<>();
 
@@ -97,12 +103,17 @@ public class StudentController {
 
     @GetMapping("getByFirstNameIn")
     public List<StudentResponse> getByFirstNameIn(@RequestBody InQueryRequest inQueryRequest) {
+
+        logger.info("inQueryRequest = " + inQueryRequest);
+
         List<Student> studentList = studentService.getByFirstNameIn(inQueryRequest);
         List<StudentResponse> studentResponseList = new ArrayList<>();
 
         studentList.stream().forEach(student -> {
             studentResponseList.add(new StudentResponse(student));
         });
+
+        logger.info("studentResponseList = " + studentResponseList);
 
         return studentResponseList;
     }

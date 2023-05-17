@@ -3,9 +3,11 @@ package com.example.demo.response;
 import com.example.demo.entities.Subject;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
+@ToString
 public class SubjectResponse {
 
     private Long id;
