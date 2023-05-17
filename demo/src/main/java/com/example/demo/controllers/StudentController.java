@@ -25,6 +25,7 @@ import java.util.List;
 @RequestMapping("/api/student/")
 public class StudentController {
 
+    // TODO: 17-May-23: MapStruct, exception handling, DAO?
     @Autowired
     StudentService studentService;
 
@@ -152,5 +153,15 @@ public class StudentController {
         });
 
         return studentResponseList;
+    }
+
+    @PutMapping("updateFirstName/{id}/{firstName}")
+    public String updateStudentWithJpql(@PathVariable long id, @PathVariable String firstName) {
+        return studentService.updateStudentWithJpql(id, firstName) + " Student(s) updated";
+    }
+
+    @DeleteMapping("deleteByFirstName/{firstName}")
+    public String deleteStudent(@PathVariable String firstName) {
+        return studentService.deleteStudent(firstName) + " Student(s) deleted";
     }
 }
