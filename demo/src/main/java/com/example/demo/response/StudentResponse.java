@@ -1,4 +1,4 @@
-package com.example.demo.mappers;
+package com.example.demo.response;
 
 import com.example.demo.entities.Student;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -20,10 +20,14 @@ public class StudentResponse {
 
     private String email;
 
+    private String fullName;
+
     public StudentResponse(Student student) {
 //        this.id = student.getId();
         this.firstName = student.getFirstName();
         this.lastName = student.getLastName();
         this.email = student.getLastName();
+        this.fullName = student.getFirstName() + " " +
+                student.getLastName();
     }
 }

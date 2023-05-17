@@ -8,6 +8,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -33,9 +34,21 @@ public class Student {
     @Column(name = "email")
     private String email;
 
+    // not representing any column in the student table
+    @Transient
+    private String fullName;
+
     public Student(CreateStudentRequest createStudentRequest) {
         this.firstName = createStudentRequest.getFirstName();
         this.lastName = createStudentRequest.getLastName();
         this.email = createStudentRequest.getEmail();
+        this.firstName = createStudentRequest.getFirstName() + " " +
+                createStudentRequest.getLastName();
+    }
+
+    public Student(String firstName, String lastName, String email) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
     }
 }

@@ -1,11 +1,14 @@
 package com.example.demo.services;
 
 import com.example.demo.entities.Student;
-import com.example.demo.mappers.StudentResponse;
 import com.example.demo.repositories.StudentRepository;
 import com.example.demo.request.CreateStudentRequest;
+import com.example.demo.request.InQueryRequest;
 import com.example.demo.request.UpdateStudentRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -49,15 +52,40 @@ public class StudentService {
         return "Student deleted successfully";
     }
 
-    public List<Student> getByFirstName (String firstName) {
+    public List<Student> getByFirstName(String firstName) {
         return studentRepository.findByFirstName(firstName);
     }
 
-    public Student getByFirstNameAndLastName (String firstName, String lastName) {
+    public Student getByFirstNameAndLastName(String firstName, String lastName) {
         return studentRepository.findByFirstNameAndLastName(firstName, lastName);
     }
 
-    public List<Student> getByFirstNameOrLastName (String firstName, String lastName) {
+    public List<Student> getByFirstNameOrLastName(String firstName, String lastName) {
         return studentRepository.findByFirstNameOrLastName(firstName, lastName);
+    }
+
+    public List<Student> getByFirstNameIn(InQueryRequest inQueryRequest) {
+        return studentRepository.findByFirstNameIn(inQueryRequest.getFirstNames());
+    }
+
+    public List<Student> getAllStudentsWithPagination(int pageNo, int pageSize) {
+        Pageable pageable = PageRequest.of(pageNo - 1, pageSize);
+
+        return studentRepository.findAll(pageable).getContent();
+    }
+
+    public List<Student> getAllStudentsWithSorting() {
+        Sort sort = Sort.by(Sort.Direction.ASC, "firstName", "lastName");
+
+        return studentRepository.findAll(sort);
+    }
+
+//    like query
+    public List<Student> like(String firstName) {
+        return studentRepository.findByFirstNameContains(firstName);
+    }
+
+    public List<Student> startsWith(String firstName) {
+        return studentRepository.findByFirstNameStartsWith(firstName);
     }
 }
